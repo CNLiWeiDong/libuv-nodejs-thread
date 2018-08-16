@@ -17,19 +17,5 @@ nodejs底层用的是libuv库，.NET底层用的也是这个库。所以node.js�
 
 
 
-Local<Function> cb = Local<Function>::Cast(args[0]);
-auto p_cb = std::make_shared<Persistent<Function>>(isolate,cb);
-//        Persistent<Function> p_cb(isolate,cb); 不能复制传递
-auto obj = std::make_shared<DownloadTest>();
-obj->init([isolate,p_cb]()->void{
-    v8::HandleScope scope(isolate);
-    Local<Function> js_callback = Local<Function>::New(isolate,*(p_cb.get()));
-    const unsigned argc = 1;
-    Local<Value> argv[argc] = { String::NewFromUtf8(isolate, "hello world") };
-    js_callback->Call(isolate->GetCurrentContext()->Global(), argc, argv);
-});
-
-
-
 最近一直在学习libuv源码，比起boost.asio使用难度大多了。不过libuv是一个框架，内部的线程池，通信，文件，进程等功能齐全。当然boost库功能更全，但功能全并不代表开发者能完美的结合这些功能。
 大家对libuv感兴趣的可以互相交流，我的QQ号的 357879926
